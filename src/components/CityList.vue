@@ -1,52 +1,55 @@
 <template>
     <div v-for="city in savedCities" :key="city.id">
-        <CityCard :city="city" @click="gotToCityView(city)"/>
+      <CityCard :city="city" @click="goToCityView(city)" />
     </div>
-
+  
     <p v-if="savedCities.length === 0">
-        No locations added. To start tracking a location, search in the field above.
+      No locations added. To start tracking a location, search in
+      the field above.
     </p>
-</template>
-
-<script setup>
-import axios from "axios";
-import {ref} from "vue";
-import CityCard from "./CityCard.vue";
-import { useRouter } from "vue-router";
-
-const savedCities = ref([]);
-const openWAPI = process.env.OP_W_API
-const getCities = async () => {
-    if (localStorage.getItem('savedCities')){
-        savedCities.value = JSON.parse(
-            localStorage.getItem('savedCities')
+  </template>
+  
+  <script setup>
+  import axios from "axios";
+  import { ref } from "vue";
+  import { useRouter } from "vue-router";
+  import CityCard from "./CityCard.vue";
+  
+  const savedCities = ref([]);
+  const getCities = async () => {
+    if (localStorage.getItem("savedCities")) {
+      savedCities.value = JSON.parse(
+        localStorage.getItem("savedCities")
+      );
+  
+      const requests = [];
+      savedCities.value.forEach((city) => {
+        requests.push(
+          axios.get(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${city.coords.lat}&lon=${city.coords.lng}&appid=c05bc543e96932962cbe546a010c81c4&units=imperial`
+          )
         );
-
-        const requests = [];
-        savedCities.value.forEach((city) => {
-            requests.push(
-                axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${city.coords.lat}&lon=${city.coords.lng}&appid=${openWAPI}&units=imperial`)
-            )    
-            });
-            const weatherData = await Promise.all(requests);
-
-            //Flicker Delay
-            await new Promise((res) => setTimeout(res, 1000));
-
-            weatherData.forEach((value,index) => {
-                savedCities.value[index].weather = value.data;
-            });
+      });
+  
+      const weatherData = await Promise.all(requests);
+  
+      weatherData.forEach((value, index) => {
+        savedCities.value[index].weather = value.data;
+      });
     }
-};
-await getCities();
-
-const router = useRouter();
-const gotToCityView = (city) => {
+  };
+  await getCities();
+  
+  const router = useRouter();
+  const goToCityView = (city) => {
     router.push({
-        name: 'cityView',
-        params: {state: city.state, city: city.city},
-        query: {id: city.id, lat: city.coords.lat, lng: city.coords.lng},
+      name: "cityView",
+      params: { state: city.state, city: city.city },
+      query: {
+        id: city.id,
+        lat: city.coords.lat,
+        lng: city.coords.lng,
+      },
     });
-};
-</script>
-
+  };
+  </script>
