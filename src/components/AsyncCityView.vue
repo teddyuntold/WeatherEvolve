@@ -38,7 +38,7 @@
                 <p class="capitalize">
                     {{ weatherData.current.weather[0].description }}
                 </p>
-                <img class="w-[150px] h-auto" :src=" 'http://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png'" alt=""/>
+                <img class="w-[150px] h-auto" :src="`http://openweathermap.org/img/wn/${weatherData.current.weather[0].icon}@2x.png`" alt=""/>
             
          </div>
 
@@ -106,10 +106,11 @@
     import { useRoute, useRouter } from 'vue-router';
 
     const route = useRoute();
+    const openWAPI = process.env.OP_W_API_KEY;
 
     const getWeatherData = async () => {
         try {
-            const weatherData = await axios.get('https://api.openweathermap.org/data/3.0/onecall?lat=${route.query.lat}&lon=${route.query.lng}&exclude={part}&appid=c05bc543e96932962cbe546a010c81c4&units=imperial');
+            const weatherData = await axios.get(`https://api.openweathermap.org/data/3.0/onecall?lat=${route.query.lat}&lon=${route.query.lng}&exclude={part}&appid=${openWAPI}&units=imperial`);
 
             //calculate current date & time
             const localOffset = new Date().getTimezoneOffset() * 60000;
@@ -122,6 +123,10 @@
                 const utc = hour.dt = 1000 + localOffset;
                 hour.currentTime = utc + 1000 + weatherData.data.timezone_offset;
             });
+
+            //Flicker Delay
+            await new Promise((res) => setTimeout(res,1000));
+
             return weatherData.data;
     } catch(err) {
         console.error(err);

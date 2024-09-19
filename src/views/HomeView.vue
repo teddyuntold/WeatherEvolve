@@ -21,7 +21,7 @@
       <Suspense>
         <CityList/>
         <template #fallback>
-          <p>loading...</p>
+          <CityCardSkeleton/>
         </template>
       </Suspense>
     </div>
@@ -29,7 +29,9 @@
 </template>
 
 <script setup>
-  import axios from 'axios';
+  import CityCardSkeleton from '@/components/CityCardSkeleton.vue';
+import CityList from '@/components/CityList.vue';
+import axios from 'axios';
   import { ref } from 'vue'
   import { useRouter } from 'vue-router';
 
@@ -47,7 +49,7 @@
     });
   }
 
-  const mapboxAPIKey = 'pk.eyJ1IjoiYW5uYW5mcmVkZHkiLCJhIjoiY20xN3ljMDB2MHRuaTJxcXpnMTgydjhwZiJ9.hJ3qKVy3o2sfou7KcGbccA'
+  const mapboxAPIKey = process.env.MP_BOX_API_KEY;
 
   const searchQuery = ref("")
   const queryTimeout = ref(null)
@@ -59,7 +61,7 @@
     queryTimeout.value = setTimeout(async () => {
       if (searchQuery !== ""){
         try {
-          const result = await axios.get('https://api.mapbox.com/geocoding/v5/mapbox.places/${searchQuery.value}.json?access_token=${mapboxAPIKey}&types=place');
+          const result = await axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${searchQuery.value}.json?access_token=${mapboxAPIKey}&types=place`);
         mapboxSearchResults.value = result.data.features;
         } catch {
           searchError.value = true;

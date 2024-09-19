@@ -15,6 +15,7 @@ import CityCard from "./CityCard.vue";
 import { useRouter } from "vue-router";
 
 const savedCities = ref([]);
+const openWAPI = process.env.OP_W_API
 const getCities = async () => {
     if (localStorage.getItem('savedCities')){
         savedCities.value = JSON.parse(
@@ -24,10 +25,13 @@ const getCities = async () => {
         const requests = []
         savedCities.value.forEach((city) => {
             requests.push(
-                axios.get('https://api.openweathermap.org/data/2.5/weather?lat=${city.coords.lat}&lon=${city.coords.lng}&appid=c05bc543e96932962cbe546a010c81c4&units=imperial')
+                axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${city.coords.lat}&lon=${city.coords.lng}&appid=${openWAPI}&units=imperial`)
             )    
             });
-            const weather = await Promise.all(requests);
+            const weatherData = await Promise.all(requests);
+
+            //Flicker Delay
+            await new Promise((res) => setTimeout(res, 1000));
 
             weatherData.forEach((value,index) => {
                 savedCities.value[index].weather = value.data;
