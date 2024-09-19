@@ -59,7 +59,7 @@
                             })
                         }}
                     </p>
-                    <img class="w-auto h-[50px] object-cover" :src="'http://openweathermap.org/img/wm/${hourData.weather[0].icon}@2x.png'" alt=""/>
+                    <img class="w-auto h-[50px] object-cover" :src="`http://openweathermap.org/img/wm/${hourData.weather[0].icon}@2x.png`" alt=""/>
                     <p class="text-xl">
                         {{ Math.round(hourData.temp) }}&deg;
                     </p>
@@ -84,7 +84,7 @@
                         }
                         ) }}
                 </p>
-                <img class="w-[50px] h-[50px] object-cover" :src="'http://openweathermap.org/img/wm/${day.weather[0].icon}@2x.png'" alt=""/>
+                <img class="w-[50px] h-[50px] object-cover" :src="`http://openweathermap.org/img/wm/${day.weather[0].icon}@2x.png`" alt=""/>
                 <div class="flex gap-2 flex-1 justify-end">
                     <p>H: {{ Math.round(day.temp.max) }}</p>
                     <p>L: {{ Math.round(day.temp.min) }}</p>
@@ -129,7 +129,7 @@
 
             return weatherData.data;
     } catch(err) {
-        console.error(err);
+        console.log(err);
     }};
     const weatherData = await getWeatherData();
      const router = useRouter();

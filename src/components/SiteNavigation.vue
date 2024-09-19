@@ -54,7 +54,7 @@
             }
         };
 
-        savedCities.value.push(loctionObj);
+        savedCities.value.push(locationObj);
         localStorage.setItem("savedCities", JSON.stringify(savedCities.value));
 
         let query = Object.assign({}, route.query);

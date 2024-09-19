@@ -15,13 +15,11 @@
 </script>
 
 <style>
-  .page-enter-active,
-  .page-leave-active {
-    transition: 600ms ease-all;
+  .page-enter-active {
+    transition: 600ms ease all;
   }
 
-  .page-enter-from,
-  .page-leave-to {
+  .page-enter-from {
     opacity: 0;
   }
 </style>

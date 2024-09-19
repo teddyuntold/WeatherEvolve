@@ -1,7 +1,10 @@
 <template>
     <div>
         <Suspense>
-            <AsyncCityView/>
+            <template #default>
+                <AsyncCityView/>
+            </template>
+            
             <template #fallback>
                 <CityViewSkeleton/>
             </template>

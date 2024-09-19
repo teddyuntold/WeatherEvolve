@@ -49,7 +49,7 @@ import axios from 'axios';
     });
   }
 
-  const mapboxAPIKey = process.env.MP_BOX_API_KEY;
+  const mapboxAPIKey = "pk.eyJ1IjoiYW5uYW5mcmVkZHkiLCJhIjoiY20xN3ljMDB2MHRuaTJxcXpnMTgydjhwZiJ9.hJ3qKVy3o2sfou7KcGbccA";
 
   const searchQuery = ref("")
   const queryTimeout = ref(null)
