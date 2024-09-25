@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col flex-1 items-center">
+    <div class="flex flex-col flex-1 items-center" v-if="weatherData">
       <!-- Banner -->
       <div
         v-if="route.query.preview"
@@ -24,18 +24,19 @@
               }
             )
           }}
-          {{
+          <!-- {{
             new Date(weatherData.currentTime).toLocaleTimeString(
               "en-us",
               {
                 timeStyle: "short",
               }
             )
-          }}
+          }} -->
         </p>
         <p class="text-8xl mb-8">
           {{ Math.round(weatherData.current.temp) }}&deg;
         </p>
+       
         <p>
           Feels like
           {{ Math.round(weatherData.current.feels_like) }} &deg;
@@ -50,6 +51,7 @@
           "
           alt=""
         />
+      
       </div>
   
       <hr class="border-white border-opacity-10 border w-full" />
@@ -142,7 +144,8 @@
   const getWeatherData = async () => {
     try {
       const weatherData = await axios.get(
-        `https://api.openweathermap.org/data/2.5/onecall?lat=${route.query.lat}&lon=${route.query.lng}&exclude={part}&appid=c05bc543e96932962cbe546a010c81c4&units=imperial`
+        //`https://api.weatherapi.com/v1/forecast.json?key=2f3020a310214fbaac843045242509&q=${route.query.lat},${route.query.lng}&days=7`
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${route.query.lat}&lon=${route.query.lng}&exclude={part}&appid=877f487dea562f3154201832d0da56bf&units=imperial`
       );
   
       // cal current date & time
@@ -161,6 +164,7 @@
       return weatherData.data;
     } catch (err) {
       console.log(err);
+      alert('Failed to fetch weather data. Please check your API key.');
     }
   };
   const weatherData = await getWeatherData();

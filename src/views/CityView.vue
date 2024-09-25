@@ -7,6 +7,9 @@
         <template #fallback>
           <CityViewSkeleton />
         </template>
+        <template #error="{ error }">
+        <div class="text-red-500">Error loading view: {{ error.message }}</div>
+      </template>
       </Suspense>
     </div>
   </template>
